@@ -6,11 +6,11 @@ Cloudflare Email Service to verified senders.
 
 ## Project overview
 
-- **Runtime:** Cloudflare Workers (requires Workers Paid plan — Email Service
-  is in public beta on paid only).
+- **Runtime:** Cloudflare Workers (requires Workers Paid plan — Email Service is
+  in public beta on paid only).
 - **Authoring:** TypeScript, bundled by Wrangler.
-- **Dependencies:** `wrangler` only (no npm runtime deps; uses
-  `nodejs_compat` for crypto).
+- **Dependencies:** `wrangler` only (no npm runtime deps; uses `nodejs_compat`
+  for crypto).
 - **State:** one KV namespace (`EMAIL_NONCE_DEDUP`) for nonce dedup +
   per-recipient rate-limit counters. Single namespace with prefixed keys.
 
@@ -22,14 +22,14 @@ The committed `wrangler.jsonc` uses **placeholder KV namespace IDs**
 
 To set up locally:
 
-1. Copy `wrangler.example.jsonc` to `wrangler.local.jsonc` and fill in the
-   real production + preview KV namespace IDs from your Cloudflare account.
+1. Copy `wrangler.example.jsonc` to `wrangler.local.jsonc` and fill in the real
+   production + preview KV namespace IDs from your Cloudflare account.
 2. `wrangler kv namespace create EMAIL_NONCE_DEDUP` (and `--preview`) to
    provision them if they don't exist.
 
-Worker **secrets** (`POLARIS_SECRET_A`, `POLARIS_SECRET_B`) are NOT in
-GitHub or the repo — they're set directly on Cloudflare via
-`wrangler secret put NAME` (one-time per environment).
+Worker **secrets** (`POLARIS_SECRET_A`, `POLARIS_SECRET_B`) are NOT in GitHub or
+the repo — they're set directly on Cloudflare via `wrangler secret put NAME`
+(one-time per environment).
 
 ## Key commands
 
@@ -41,14 +41,13 @@ GitHub or the repo — they're set directly on Cloudflare via
 
 ## Local CI fallback
 
-When GitHub Actions is unavailable, the CI workflow's jobs reproduce
-locally as:
+When GitHub Actions is unavailable, the CI workflow's jobs reproduce locally as:
 
-| CI job        | Local equivalent                          |
-|---------------|-------------------------------------------|
-| `typecheck`   | `npx tsc --noEmit`                        |
-| `build`       | `npx wrangler deploy --dry-run`           |
-| `secrets-scan`| `gitleaks detect --no-banner`             |
+| CI job         | Local equivalent                |
+| -------------- | ------------------------------- |
+| `typecheck`    | `npx tsc --noEmit`              |
+| `build`        | `npx wrangler deploy --dry-run` |
+| `secrets-scan` | `gitleaks detect --no-banner`   |
 
 The `deploy.yml` workflow is **not** locally runnable without
 `CLOUDFLARE_API_TOKEN` — manual deploys use `bin/deploy.sh`.
@@ -62,7 +61,7 @@ protection). See `src/index.ts` for the verifier.
 
 ## Brand-naming note
 
-The env-var names `POLARIS_SECRET_A` / `POLARIS_SECRET_B` are historical
-(this worker originated under the Polaris brand). Renaming requires
-coordinated changes in the web app's email client too — out of scope for
-now. Keep the names stable.
+The env-var names `POLARIS_SECRET_A` / `POLARIS_SECRET_B` are historical (this
+worker originated under the Polaris brand). Renaming requires coordinated
+changes in the web app's email client too — out of scope for now. Keep the names
+stable.
