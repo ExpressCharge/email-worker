@@ -1,0 +1,38 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: deploy environment
+        type: choice
+        options: [production, staging]
+        default: production
+
+concurrency:
+  group: deploy-${{ inputs.environment || 'production' }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment || 'production' }}
+    env:
+      PRODUCTION_KV_NAMESPACE_ID: ${{ secrets.PRODUCTION_KV_NAMESPACE_ID }}
+      PREVIEW_KV_NAMESPACE_ID: ${{ secrets.PREVIEW_KV_NAMESPACE_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: deploy via bin/deploy.sh
+        run: bin/deploy.sh

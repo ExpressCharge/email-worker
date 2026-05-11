@@ -4,3 +4,10 @@ node_modules/
 *.log
 .DS_Store
 dist/
+
+# Local config overlays — contain real KV namespace IDs and other deploy-time
+# values that mustn't enter public history. See bin/deploy.sh for how this
+# overlay is merged into wrangler.jsonc at deploy time.
+wrangler.local.jsonc
+.release-config
+.claude/

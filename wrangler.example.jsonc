@@ -1,0 +1,11 @@
+// Copy to wrangler.local.jsonc and fill in real values from your Cloudflare account.
+// wrangler.local.jsonc is gitignored. bin/deploy.sh merges it over wrangler.jsonc.
+{
+  "kv_namespaces": [
+    {
+      "binding": "EMAIL_NONCE_DEDUP",
+      "id": "REPLACE_WITH_PRODUCTION_KV_ID",
+      "preview_id": "REPLACE_WITH_PREVIEW_KV_ID"
+    }
+  ]
+}
